@@ -10,14 +10,14 @@
       <!-- 2.0 评论列表区域 -->
       <div class="commentListStyle">
         <h4>评论列表</h4>
-        <div class="commentItemStyle">
-            <p class="commentConentStyle">小可爱是大家的</p>
+        <div v-for="(item,index) in commentList" :key="index" class="commentItemStyle">
+            <p class="commentConentStyle">{{item.content}}</p>
             <p class="commentUserAndTimeStyle">
-              <span>匿名用户</span>
-              <span>2017-10-19</span>
+              <span>{{item.user_name}}</span>
+              <span>{{item.add_time | dateFmt}}</span>
             </p>
         </div>
-        <mt-button type="danger" class="loadMoreStyle" size="large" plain>加载更多</mt-button>
+        <mt-button @click="loadMore" type="danger" class="loadMoreStyle" size="large" plain>加载更多</mt-button>
       </div>
   </div>
 </template>
@@ -58,9 +58,57 @@
 
 
 <script>
+  import common from '../../common/common.js'
+
+  //按需导入Toast
+  import { Toast } from 'mint-ui'
+
   export default{
+    data(){
+      return {
+        commentList:[],
+        pageIndex:1 //页码，默认是第一页
+      }
+    },
     created(){
-      console.log(this.commentId)
+      this.getCommentListData()
+    },
+    methods:{
+      //根据页码获取评论数据
+      getCommentListData(){
+        const url = common.apihost+"api/getcomments/"+this.commentId+"?pageindex="+this.pageIndex
+
+        this.$http.get(url).then(response=>{
+          if(this.pageIndex==1){//第一页
+            if(response.body.message.length==0){
+              Toast({
+                message: '还没有沙发，赶快抢占',
+                position: 'middle',
+                duration: 3000
+              });
+            }else{
+              this.commentList = response.body.message
+            }
+          }else{//非第一页
+            if(response.body.message.length==0){
+              Toast({
+                message: '没有啦，别点啦!!!',
+                position: 'middle',
+                duration: 3000
+              });
+            }else{
+              this.commentList = this.commentList.concat(response.body.message)
+            }
+          }
+        },err=>{
+          console.log(err)
+        })
+      },
+      //加载更多
+      loadMore(){
+        this.pageIndex++
+        this.getCommentListData()
+      }
     },
     props:['commentId'] //父组件到时候传递值就根据该名称
   }
