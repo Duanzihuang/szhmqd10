@@ -12,11 +12,13 @@
        <div class="imageListStyle">
            <ul>
                <li v-for="item in imageList" :key="item.id">
-                   <img :src="item.img_url" alt="">
-                   <p>
-                       <span>{{item.title}}</span><br/>
-                       {{item.zhaiyao}}
-                   </p>
+                   <router-link :to="'/photo/photoinfo/'+item.id">
+                    <img :src="item.img_url" alt="">
+                    <p>
+                        <span>{{item.title}}</span><br/>
+                        {{item.zhaiyao}}
+                    </p>
+                   </router-link>
                </li>
            </ul>
        </div>

@@ -44,6 +44,7 @@ import mine from './components/mine/mine.vue'
 import newslist from './components/news/newslist.vue'
 import newsinfo from './components/news/newsinfo.vue'
 import photolist from './components/photo/photolist.vue'
+import photoinfo from './components/photo/photoinfo.vue'
 
 //创建路由对象，设置路由规则
 const router = new VueRouter({
@@ -55,7 +56,8 @@ const router = new VueRouter({
         {path:'/mine',component:mine},
         {path:'/news/newslist',component:newslist},
         {path:'/news/newsinfo/:newsId',component:newsinfo},
-        {path:'/photo/photolist',component:photolist}
+        {path:'/photo/photolist',component:photolist},
+        {path:'/photo/photoinfo/:photoId',component:photoinfo}
     ]
 })
 
