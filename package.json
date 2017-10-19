@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.2.1",
     "mint-ui": "^2.2.9",
     "moment": "^2.19.1",
     "vue": "^2.5.2",

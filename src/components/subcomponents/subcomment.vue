@@ -3,8 +3,8 @@
       <!-- 1.0 提交评论区域 -->
       <div class="submitCommentStyle">
         <h4>提交评论</h4>
-        <textarea name="" id="" cols="30" rows="5" placeholder="请输入评论内容"></textarea>
-        <mt-button type="primary" size="large">提交评论</mt-button>
+        <textarea ref="textAreaRef" cols="30" rows="5" placeholder="请输入评论内容"></textarea>
+        <mt-button type="primary" @click="submitComment" size="large">提交评论</mt-button>
       </div>
 
       <!-- 2.0 评论列表区域 -->
@@ -60,6 +60,9 @@
 <script>
   import common from '../../common/common.js'
 
+  //导入jquery
+  // import $ from 'jquery'
+
   //按需导入Toast
   import { Toast } from 'mint-ui'
 
@@ -108,6 +111,37 @@
       loadMore(){
         this.pageIndex++
         this.getCommentListData()
+      },
+      //提交评论
+      submitComment(){
+        //获取textarea的值  v-model 原生js 
+        var content  = this.$refs.textAreaRef.value
+        if(content.length===0){
+          Toast({
+            message: '请输入要评价的内容',
+            position: 'middle',
+            duration: 3000
+          });
+          return 
+        }
+
+        //发送网络请求
+        const url = common.apihost+"api/postcomment/"+this.commentId
+        this.$http.post(url,{content:content},{emulateJSON:true}).then(response=>{
+          //1.显示服务器返回的提示
+          Toast({
+            message: response.body.message,
+            position: 'middle',
+            duration: 3000
+          });
+
+          //2.内容清空
+          this.$refs.textAreaRef.value = ''
+
+          //3.重新查询第一页
+          this.pageIndex = 1
+          this.getCommentListData()
+        });
       }
     },
     props:['commentId'] //父组件到时候传递值就根据该名称
