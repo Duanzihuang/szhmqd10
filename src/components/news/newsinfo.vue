@@ -12,7 +12,7 @@
       </div>
 
       <!-- 3.0 评论子组件 -->
-      <subcomment></subcomment>
+      <subcomment :commentId="this.$route.params.newsId"></subcomment>
   </div>
 </template>
 
