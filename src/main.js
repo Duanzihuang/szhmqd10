@@ -42,6 +42,7 @@ import category from './components/category/category.vue'
 import shopcart from './components/shopcart/shopcart.vue'
 import mine from './components/mine/mine.vue'
 import newslist from './components/news/newslist.vue'
+import newsinfo from './components/news/newsinfo.vue'
 
 //创建路由对象，设置路由规则
 const router = new VueRouter({
@@ -51,7 +52,8 @@ const router = new VueRouter({
         {path:'/category',component:category},
         {path:'/shopcart',component:shopcart},
         {path:'/mine',component:mine},
-        {path:'/news/newslist',component:newslist}
+        {path:'/news/newslist',component:newslist},
+        {path:'/news/newsinfo/:newsId',component:newsinfo}
     ]
 })
 
