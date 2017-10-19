@@ -10,6 +10,9 @@
       <div class="contentStyle">
           <p v-html="newsInfo.content"></p>
       </div>
+
+      <!-- 3.0 评论子组件 -->
+      <subcomment></subcomment>
   </div>
 </template>
 
@@ -32,6 +35,9 @@
 <script>
     import common from '../../common/common.js'
 
+    //导入子组件
+    import subcomment from '../subcomponents/subcomment.vue'
+
     export default{
         data(){
             return {
@@ -51,6 +57,9 @@
                     console.log(err)
                 })
             }
+        },
+        components:{//注册子组件使用
+            subcomment:subcomment
         }
     }
 </script>
