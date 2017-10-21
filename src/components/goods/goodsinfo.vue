@@ -9,6 +9,7 @@
        <div class="goodsInfoStyle">
            <h5>{{goodsInfo.title}}</h5>
            <p>市场价:<del>￥{{goodsInfo.market_price}}</del>&nbsp;&nbsp;销售价:￥<span>{{goodsInfo.market_price}}</span></p>
+           <subnumber @changeNumber="getChangeNumber"></subnumber>
            <mt-button type="primary">立即购买</mt-button>
            <mt-button type="danger">加入购物车</mt-button>
        </div>
@@ -77,6 +78,7 @@
 
    //导入轮播子组件
    import subswipe from '../subcomponents/subswipe.vue'
+   import subnumber from '../subcomponents/subnumber.vue'
    
    export default {
        data() {
@@ -106,10 +108,15 @@
            //跳转到商品评论组件中去 ?xxx=xxx req.query.xxx
            goToGoodsComment(){
                this.$router.push({ path: '/goods/goodscomment', query: { goodsId: this.$route.params.goodsId }})
+           },
+           //子组件触发了自定义事件之后，父组件中要执行的函数
+           getChangeNumber(count){
+               console.log("-----",count)
            }
        },
        components:{
-           subswipe
+           subswipe,
+           subnumber
        }
    }
 </script>
