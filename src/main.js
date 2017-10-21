@@ -8,11 +8,13 @@ import Mint from 'mint-ui'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import moment from 'moment'
+import VuePreview from 'vue-preview'
 
 //集成中间件
 Vue.use(Mint)
 Vue.use(VueRouter)//Vue.propertype.$route  Vue.propertype.$router
 Vue.use(VueResource)//Vue.propertype.$http
+Vue.use(VuePreview)
 
 //导入样式
 //todo 生产阶段要是用style.min.css
