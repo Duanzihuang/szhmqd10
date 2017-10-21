@@ -1,13 +1,7 @@
 <template>
   <div>
     <!-- 1.0 轮播图 -->
-    <mt-swipe :auto="3000">
-      <mt-swipe-item v-for="(item,index) in lunboArray" :key="index">
-        <a :href="item.url">
-          <img :src="item.img">
-        </a>
-      </mt-swipe-item>
-    </mt-swipe>
+    <subswipe lunbo_url="api/getlunbo" :lunbo_time="lunboTime"></subswipe>
 
     <!-- 2.0 九宫格布局 -->
     <div class="mui-content">
@@ -56,17 +50,7 @@
 </template>
 
 <style scoped>
-  /* 1.0 轮播图样式 */
-  .mint-swipe {
-    height: 250px;
-  }
-
-  img {
-    width: 100%;
-    height: 250px;
-  }
-
-  /* 2.0 九宫格布局样式 */
+  /* 1.0 九宫格布局样式 */
   .mui-grid-view.mui-grid-9{
     background-color: #ffffff;
     border: 0px;
@@ -125,6 +109,10 @@
 
 <script>
   import common from '../../common/common.js'
+
+  //导入轮播子组件
+  import subswipe from '../subcomponents/subswipe.vue'
+
   /**
    * 1、如果我们需要在组件中写业务逻辑(比如网络请求或是点击事件等)，必须导出一个Vue对象
    * 2、导出Vue对象的写法，可以是es5 module.exports = {} 也可是es6的 export default{}
@@ -132,24 +120,11 @@
   export default {
     data: function() {
       return {
-        lunboArray: [] //数据的初始化
+        lunboTime:3000
       }
     },
-    created() {//Vue框架会在我们的home.vue创建完毕之后自动调用
-      this.getLunboData()
-    },
-    methods: {
-      //获取轮播数据的方法
-      getLunboData: function() {
-        const url = common.apihost+"api/getlunbo"
-
-        //发送网络请求
-        this.$http.get(url).then(response => {
-          this.lunboArray = response.body.message
-        }, err => {
-          console.log(err)
-        })
-      }
+    components:{
+      subswipe
     }
   }
 </script>
