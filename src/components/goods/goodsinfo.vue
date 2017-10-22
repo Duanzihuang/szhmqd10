@@ -11,7 +11,7 @@
            <p>市场价:<del>￥{{goodsInfo.market_price}}</del>&nbsp;&nbsp;销售价:￥<span>{{goodsInfo.market_price}}</span></p>
            <subnumber @changeNumber="getChangeNumber"></subnumber>
            <mt-button type="primary">立即购买</mt-button>
-           <mt-button type="danger">加入购物车</mt-button>
+           <mt-button @click="addToShopCart" type="danger">加入购物车</mt-button>
        </div>
 
        <!-- 3.0 商品参数 -->
@@ -79,12 +79,16 @@
    //导入轮播子组件
    import subswipe from '../subcomponents/subswipe.vue'
    import subnumber from '../subcomponents/subnumber.vue'
+
+   //导入公共的bus
+   import bus from '../../common/commonvue.js'
    
    export default {
        data() {
            return {
                lunboTime:1000,//轮播图的时间
-               goodsInfo : {}
+               goodsInfo : {},
+               goodsCount:1
            }
        },
        created() {
@@ -111,7 +115,15 @@
            },
            //子组件触发了自定义事件之后，父组件中要执行的函数
            getChangeNumber(count){
-               console.log("-----",count)
+               this.goodsCount = count
+           },
+           //加入购物车
+           addToShopCart(){
+               //1.拿到子组件中传递过来的值
+               
+
+               //2.使用公共的bus(公共的Vue实例)，触发事件，传递值出去
+               bus.$emit('changeBadge', this.goodsCount)
            }
        },
        components:{

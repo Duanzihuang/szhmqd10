@@ -23,6 +23,7 @@
       <mt-tab-item>
         <router-link to="/shopcart">
           <img src="http://img08.jiuxian.com/bill/2016/0224/42baf46987b6460bb43b3396e9941653.png">
+          <span class="badgeStyle" v-show="count!=0">{{count}}</span>
         </router-link>
       </mt-tab-item>
       <mt-tab-item>
@@ -64,18 +65,52 @@
   .hideTabBarStyle{
     display: none;
   }
+  /**
+  * 购物车徽标的样式
+  */
+  .badgeStyle{
+    font-size: 11px;
+    line-height: 1.3;  
+    position: absolute;
+    top: 7px;
+    left: 63%;
+    text-align: center;
+    padding: 1px 5px; 
+    color: #fff;
+    border-radius: 11px; 
+    background: red;
+  }
 </style>
 
 <script>
+  //导入公共的bus
+  import bus from './common/commonvue.js'
+
   export default{
     data(){
       return {
         isShowBack:false,
-        isHideTabBar:false
+        isHideTabBar:false,
+        count:0
       }
     },
     created(){
       this.isShowOrHide(this.$route.path)
+      
+      /**
+       * 如何改变函数的this指向
+       * 
+       * es3
+       *    在外面声明一个变量 const _this = this
+       *    apply、call 会改变里面this的指向，立即执行函数
+       *    bind  会改变里面this的指向 调用这个函数的时候才会执行
+       * 
+       * es6箭头函数
+       * 
+       */
+      bus.$on('changeBadge', function (goodsCount)  {
+        this.count+=goodsCount
+      }.bind(this))
     },
     methods:{
       goBack(){
