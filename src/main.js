@@ -9,12 +9,14 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import moment from 'moment'
 import VuePreview from 'vue-preview'
+import Vuex from 'vuex'
 
 //集成中间件
 Vue.use(Mint)
 Vue.use(VueRouter)//Vue.propertype.$route  Vue.propertype.$router
 Vue.use(VueResource)//Vue.propertype.$http
 Vue.use(VuePreview)
+Vue.use(Vuex) //Vue.propertype.$store
 
 //导入样式
 //todo 生产阶段要是用style.min.css
@@ -72,6 +74,43 @@ const router = new VueRouter({
     ]
 })
 
+//Vuex
+const store = new Vuex.Store({
+    state:{//数据
+        goodsList:[] //goodsList是一个数组，里面存取的就是一个对象{goodsId:"87",count:2}
+        //[{goodsId:"87",count:2},{goodsId:"88",count:3},{goodsId:"87",count:3}]
+    },
+    getters:{
+        getGoodsTotalCount(state){
+            //1.获取列表
+            const goodsList = state.goodsList
+            
+            let totalCount  = 0
+            goodsList.forEach(item=>{
+                totalCount+=item.count
+            })
+
+            return totalCount
+        },
+        getGoosList(state){
+            return state.goodsList
+        }
+    },
+    mutations: {//同步的保存和更新state中的数据
+        saveGoods (state,goodsObj) { //goods ===> {goodsId:"87",count:3}
+            // 将传入的商品对象，保存到state的goodsList数组中
+            state.goodsList.push(goodsObj)
+
+            console.log(state.goodsList)
+        }
+    },
+    actions:{
+        asyncSaveGoods(context,goods) { //context 相当于$store
+            context.commit('saveGoods',goods) //调用同步保存商品的方法
+        }
+    }
+})
+
 //创建根实例
 new Vue({
     el:'#app',
@@ -79,5 +118,6 @@ new Vue({
     //     return createElement(App)
     // }
     router,
+    store,
     render:h=>h(App)
 })

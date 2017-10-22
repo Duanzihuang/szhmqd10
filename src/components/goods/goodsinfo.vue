@@ -81,7 +81,7 @@
    import subnumber from '../subcomponents/subnumber.vue'
 
    //导入公共的bus
-   import bus from '../../common/commonvue.js'
+//    import bus from '../../common/commonvue.js'
    
    export default {
        data() {
@@ -123,7 +123,17 @@
                
 
                //2.使用公共的bus(公共的Vue实例)，触发事件，传递值出去
-               bus.$emit('changeBadge', this.goodsCount)
+               //bus.$emit('changeBadge', this.goodsCount)
+
+
+               //3 使用Vuex的方式，将我们选中的商品和数量保存到仓库中
+               const goodsObj = {goodsId:this.$route.params.goodsId,count:this.goodsCount}
+
+               //同步保存
+               this.$store.commit('saveGoods',goodsObj)
+
+               //异步保存
+               // this.$store.dispatch('asyncSaveGoods',goodsObj)
            }
        },
        components:{

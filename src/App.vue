@@ -84,7 +84,7 @@
 
 <script>
   //导入公共的bus
-  import bus from './common/commonvue.js'
+  // import bus from './common/commonvue.js'
 
   export default{
     data(){
@@ -96,7 +96,6 @@
     },
     created(){
       this.isShowOrHide(this.$route.path)
-      
       /**
        * 如何改变函数的this指向
        * 
@@ -108,9 +107,12 @@
        * es6箭头函数
        * 
        */
-      bus.$on('changeBadge', function (goodsCount)  {
-        this.count+=goodsCount
-      }.bind(this))
+      // bus.$on('changeBadge', function (goodsCount)  {
+      //   this.count+=goodsCount
+      // }.bind(this))
+    },
+    updated(){
+        this.count = this.$store.getters.getGoodsTotalCount
     },
     methods:{
       goBack(){
