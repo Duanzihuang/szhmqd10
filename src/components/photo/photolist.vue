@@ -92,6 +92,10 @@
            this.getImageCatetoryData()
            this.getImageListByCategoryId(0)
        },
+       destroyed(){
+           //console.log("111111111111111111111")
+           Indicator.close()
+       },
        methods: {
            //获取图片列表数据
            getImageCatetoryData(){

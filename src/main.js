@@ -92,7 +92,7 @@ const store = new Vuex.Store({
 
             return totalCount
         },
-        getGoosList(state){
+        getGoodsList(state){
             return state.goodsList
         }
     },
