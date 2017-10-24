@@ -5,18 +5,14 @@
 /** Vue是变量名  vue是包名 */
 import Vue from 'vue'
 import Mint from 'mint-ui'
-import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import moment from 'moment'
 import VuePreview from 'vue-preview'
-import Vuex from 'vuex'
 
 //集成中间件
 Vue.use(Mint)
-Vue.use(VueRouter)//Vue.propertype.$route  Vue.propertype.$router
 Vue.use(VueResource)//Vue.propertype.$http
 Vue.use(VuePreview)
-Vue.use(Vuex) //Vue.propertype.$store
 
 //导入样式
 //todo 生产阶段要是用style.min.css
@@ -39,91 +35,9 @@ Vue.filter('dateFmt',(input,dateFmtString)=>{
 //导入App.vue
 import App from './App.vue'//var App = require('./App.vue')
 
-
-//导入组件
-import home from './components/home/home.vue'
-import category from './components/category/category.vue'
-import shopcart from './components/shopcart/shopcart.vue'
-import mine from './components/mine/mine.vue'
-import newslist from './components/news/newslist.vue'
-import newsinfo from './components/news/newsinfo.vue'
-import photolist from './components/photo/photolist.vue'
-import photoinfo from './components/photo/photoinfo.vue'
-import goodslist from './components/goods/goodslist.vue'
-import goodsinfo from './components/goods/goodsinfo.vue'
-import pictureAndText from './components/goods/pictureAndText.vue'
-import goodscomment from './components/goods/goodscomment.vue'
-
-//创建路由对象，设置路由规则
-const router = new VueRouter({
-    routes:[
-        {path:'/',redirect:'/home'},
-        {path:'/home',component:home},
-        {path:'/category',component:category},
-        {path:'/shopcart',component:shopcart},
-        {path:'/mine',component:mine},
-        {path:'/news/newslist',component:newslist},
-        {path:'/news/newsinfo/:newsId',component:newsinfo},
-        {path:'/photo/photolist',component:photolist},
-        {path:'/photo/photoinfo/:photoId',component:photoinfo},
-        {path:'/goods/goodslist',component:goodslist},
-        {path:'/goods/goodsinfo/:goodsId',component:goodsinfo},
-        {name:'pictureAndText',path:'/pictureAndText',component:pictureAndText},
-        {path:'/goods/goodscomment',component:goodscomment}
-    ]
-})
-
-//Vuex
-const store = new Vuex.Store({
-    state:{//数据
-        goodsList:[] //goodsList是一个数组，里面存取的就是一个对象{goodsId:"87",count:2}
-        //[{goodsId:"87",count:2},{goodsId:"88",count:3},{goodsId:"87",count:3}]
-    },
-    getters:{
-        getGoodsTotalCount(state){
-            //1.获取列表
-            const goodsList = state.goodsList
-            
-            let totalCount  = 0
-            goodsList.forEach(item=>{
-                totalCount+=item.count
-            })
-
-            return totalCount
-        },
-        getGoodsList(state){
-            return state.goodsList
-        }
-    },
-    mutations: {//同步的保存和更新state中的数据
-        saveGoods (state,goodsObj) { //goods ===> {goodsId:"87",count:3}
-            // 将传入的商品对象，保存到state的goodsList数组中
-            state.goodsList.push(goodsObj)
-
-            console.log(state.goodsList)
-        },
-        deleteGoodsById(state,goodsId){
-            //[{goodsId:"87",count:2},{goodsId:"88",count:3},{goodsId:"87",count:3}]
-            //for循环删除,边遍历，便删除，一般是从后往前删除
-            // for(var i=state.goodsList.length-1 ;i>=0;i--){
-            //     const goods = state.goodsList[i]
-            //     if(goods.goodsId==goodsId){
-            //         state.goodsList.splice(i,1)
-            //     }
-            // }
-
-            //顾虑 filter [{goodsId:"88",count:3}]
-            state.goodsList = state.goodsList.filter(item=>{
-                return item.goodsId!=goodsId
-            })
-        }
-    },
-    actions:{
-        asyncSaveGoods(context,goods) { //context 相当于$store
-            context.commit('saveGoods',goods) //调用同步保存商品的方法
-        }
-    }
-})
+//导入路由模块
+import router from './router/router.js'
+import store from './store/index.js'
 
 //创建根实例
 new Vue({
