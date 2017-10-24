@@ -2,9 +2,9 @@
   <div>
       <!-- 1.0 商品的列表 -->
       <div class="goodsListStyle">
-        <div v-for="item in goodsList" :key="item.id" class="itemStyle">
+        <div v-for="(item,index) in goodsList" :key="item.id" class="itemStyle">
           <!-- 开关 -->
-          <mt-switch v-model="item.isSelected" class="switchStyle"></mt-switch>
+          <mt-switch @change="statisticsTotalCountAndTotalPrice" v-model="item.isSelected" class="switchStyle"></mt-switch>
           <!-- 缩略图 -->
           <div class="thumbImageStyle">
             <img :src="item.thumb_path" alt="">
@@ -20,11 +20,24 @@
             </p>
           </div>
           <!-- 删除按钮 -->
-          <mt-button class="deleteStyle" type="danger" size="small">删 除</mt-button>
+          <mt-button :disabled="!item.isSelected" class="deleteStyle" type="danger" size="small" @click="deleteItem(index)">删 除</mt-button>
         </div>
       </div>
 
       <!-- 2.0 提示信息 -->
+      <div class="statisticsInfoStyle">
+        <div class="totalPriceAndCountStyle">
+          <h2>
+            总计(不含运费)
+          </h2>
+          <p>
+            已经勾选商品&nbsp;<span>{{totalCount}}</span>&nbsp;件,总价&nbsp;<span>{{totalPrice}}</span>&nbsp;
+          </p>
+        </div>
+        <div>
+          <mt-button class="payStyle" type="danger" size="normal">去结算</mt-button>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -78,6 +91,33 @@
     font-size: 14px;
     color: red;
   }
+
+  /** 统计信息相关的样式 */
+  .statisticsInfoStyle{
+    height: 100px;
+    background-color: rgba(92,92,92,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  h2{
+    font-size: 18px;
+  }
+
+  .totalPriceAndCountStyle{
+    margin-left: 8px;
+  }
+
+  .payStyle{
+    margin-right: 8px;
+  }
+
+  .totalPriceAndCountStyle p span{
+    color: red;
+    font-size: 16px;
+  }
+
 </style>
 
 
@@ -85,10 +125,14 @@
   //导入common.js
   import common from '../../common/common.js'
 
+  import { MessageBox } from 'mint-ui'
+
   export default{
     data(){
       return {
-        goodsList : []
+        goodsList : [],
+        totalCount:0,
+        totalPrice:0
       }
     },
     created(){
@@ -140,9 +184,43 @@
             item.count = tempObj[item.id]
             item.isSelected = true
           })
-
+          
+          //赋值给我们当前的数组
           this.goodsList = response.body.message
+
+          //刚开始获取到服务器的数据之后，就要统计一次
+          this.statisticsTotalCountAndTotalPrice()
         })
+      },
+      //统计我们现在选中商品的数量和价格
+      statisticsTotalCountAndTotalPrice(){
+        let tempTotalCount = 0
+        let tempTotalPrice = 0
+
+        this.goodsList.forEach(item=>{
+          if(item.isSelected){
+            tempTotalCount+=item.count
+            tempTotalPrice+=item.sell_price * item.count
+          }
+        })
+
+        this.totalCount = tempTotalCount
+        this.totalPrice = tempTotalPrice
+      },
+      deleteItem(index){
+        MessageBox.confirm('确定删除该条数据吗?').then(action => {
+          //1.0 先删除Vuex中对应id的数据
+          this.$store.commit('deleteGoodsById',this.goodsList[index].id)
+
+          //2.0 删除点击索引的数据
+          this.goodsList.splice(index,1)
+
+          //3.0 重新统计总数量和总价格
+          this.statisticsTotalCountAndTotalPrice()
+        },cancel=>{
+          console.log(cancel)
+        });
+
         
       }
     }
