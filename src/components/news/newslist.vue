@@ -75,6 +75,12 @@
         },err=>{
           console.log(err)
         })
+        
+        /**
+          this.$axios.get(url).then(response=>{
+            this.newslist = response.data.message
+          })
+        */
       }
     }
   }

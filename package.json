@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --progress --config webpack.develop.config.js --port 3008 --open --hot"
+    "dev": "webpack-dev-server --progress --config webpack.develop.config.js --port 3008 --open --hot",
+    "build": "webpack --progress --config webpack.production.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.0",
     "jquery": "^3.2.1",
     "mint-ui": "^2.2.9",
     "moment": "^2.19.1",
@@ -21,6 +23,9 @@
     "vuex": "^3.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",

@@ -8,11 +8,14 @@ import Mint from 'mint-ui'
 import VueResource from 'vue-resource'
 import moment from 'moment'
 import VuePreview from 'vue-preview'
+// import axios from 'axios'
 
 //集成中间件
 Vue.use(Mint)
 Vue.use(VueResource)//Vue.propertype.$http
 Vue.use(VuePreview)
+//原型上不要随便加东西，加一些每个实例都需要用到的
+// Vue.prototype.$axios = axios
 
 //导入样式
 //todo 生产阶段要是用style.min.css

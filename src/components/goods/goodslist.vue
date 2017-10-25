@@ -103,6 +103,11 @@
                this.$http.get(url).then(response=>{
                    this.goodsList = response.body.message
                })
+              /** 
+                 this.$axios.get(url).then(response=>{
+                     this.goodsList = response.data.message
+                })
+              */
            }
        }
    }
