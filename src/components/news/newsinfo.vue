@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isShow">
       <!-- 1.0 标题部分 -->
       <div class="titleStyle">
           <h3>{{newsInfo.title}}</h3>
@@ -35,13 +35,16 @@
 <script>
     import common from '../../common/common.js'
 
+    import { Indicator } from 'mint-ui'
+
     //导入子组件
     import subcomment from '../subcomponents/subcomment.vue'
 
     export default{
         data(){
             return {
-                newsInfo : {}
+                newsInfo : {},
+                isShow:false
             }
         },
         created(){
@@ -51,9 +54,17 @@
             getNewsInfoData(){
                 const url = common.apihost+"api/getnew/"+this.$route.params.newsId
                 
+                Indicator.open({
+                    text: '正在拼命加载中...',
+                    spinnerType: 'triple-bounce'
+               })
+
                 this.$http.get(url).then(response=>{
                     this.newsInfo = response.body.message[0]
+                    Indicator.close()
+                    this.isShow = true
                 },err=>{
+                    Indicator.close()
                     console.log(err)
                 })
             }

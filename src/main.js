@@ -20,8 +20,10 @@ Vue.use(VuePreview)
 //导入样式
 //todo 生产阶段要是用style.min.css
 //在这里可以不用写node_modules的路径，它自己回去找
-import 'mint-ui/lib/style.css'
-import './statics/mui/css/mui.css'
+// import 'mint-ui/lib/style.css'
+import 'mint-ui/lib/style.min.css'
+// import './statics/mui/css/mui.css'
+import './statics/mui/css/mui.min.css'
 import './statics/css/site.css'
 
 //全局的过滤器
